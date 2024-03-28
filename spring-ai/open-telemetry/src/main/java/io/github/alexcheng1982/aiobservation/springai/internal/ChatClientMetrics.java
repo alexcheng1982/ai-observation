@@ -1,5 +1,6 @@
 package io.github.alexcheng1982.aiobservation.springai.internal;
 
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleHistogram;
 import io.opentelemetry.api.metrics.DoubleHistogramBuilder;
@@ -10,6 +11,7 @@ import io.opentelemetry.instrumentation.api.instrumenter.OperationListener;
 import io.opentelemetry.instrumentation.api.instrumenter.OperationMetrics;
 import io.opentelemetry.instrumentation.api.internal.OperationMetricsUtil;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ChatClientMetrics implements OperationListener {
@@ -19,12 +21,19 @@ public class ChatClientMetrics implements OperationListener {
   private static final ContextKey<State> CHAT_CLIENT_CALL_METRICS_STATE =
       ContextKey.named("chat-client-metrics-state");
 
+  private static final Set<AttributeKey<?>> metricsAttributes = Set.of(
+      SemanticAttributes.PROMPT_TOKENS_COUNT,
+      SemanticAttributes.GENERATION_TOKENS_COUNT,
+      SemanticAttributes.TOTAL_TOKENS_COUNT
+  );
+
   public static OperationMetrics get() {
     return OperationMetricsUtil.create("chat client", ChatClientMetrics::new);
   }
 
   static final List<Double> DURATION_SECONDS_BUCKETS =
-      List.of(0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0);
+      List.of(0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5,
+          5.0, 7.5, 10.0);
 
 
   private final DoubleHistogram duration;
@@ -40,7 +49,8 @@ public class ChatClientMetrics implements OperationListener {
   }
 
   @Override
-  public Context onStart(Context context, Attributes startAttributes, long startNanos) {
+  public Context onStart(Context context, Attributes startAttributes,
+      long startNanos) {
     return context.with(
         CHAT_CLIENT_CALL_METRICS_STATE,
         new State(startAttributes, startNanos));
@@ -54,9 +64,13 @@ public class ChatClientMetrics implements OperationListener {
       return;
     }
 
-    Attributes attributes = state.startAttributes().toBuilder().putAll(endAttributes).build();
+    Attributes attributes = state.startAttributes().toBuilder()
+        .putAll(endAttributes)
+        .removeIf(attributeKey -> !metricsAttributes.contains(attributeKey))
+        .build();
 
-    duration.record((endNanos - state.startTimeNanos()) / NANOS_PER_S, attributes, context);
+    duration.record((endNanos - state.startTimeNanos()) / NANOS_PER_S,
+        attributes, context);
   }
 
   record State(Attributes startAttributes, long startTimeNanos) {

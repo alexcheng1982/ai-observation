@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: spring-ai-observation
+  ai:
+    ollama:
+      embedding:
+        options:
+          model: "qwen:0.5b"
+      chat:
+        options:
+          model: "qwen:0.5b"
