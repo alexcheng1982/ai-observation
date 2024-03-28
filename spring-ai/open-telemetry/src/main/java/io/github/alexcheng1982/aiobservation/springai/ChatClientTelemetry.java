@@ -7,13 +7,17 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 
+/**
+ * {@linkplain ChatClient} telemetry
+ */
 public final class ChatClientTelemetry {
 
   public static ChatClientTelemetry create(OpenTelemetry openTelemetry) {
     return builder(openTelemetry).build();
   }
 
-  public static ChatClientTelemetryBuilder builder(OpenTelemetry openTelemetry) {
+  public static ChatClientTelemetryBuilder builder(
+      OpenTelemetry openTelemetry) {
     return new ChatClientTelemetryBuilder(openTelemetry);
   }
 
@@ -23,6 +27,12 @@ public final class ChatClientTelemetry {
     this.instrumenter = instrumenter;
   }
 
+  /**
+   * Wrap a {@linkplain ChatClient} to support telemetry
+   *
+   * @param chatClient
+   * @return
+   */
   public ChatClient newChatClient(ChatClient chatClient) {
     return new OpenTelemetryChatClient(chatClient, instrumenter);
   }

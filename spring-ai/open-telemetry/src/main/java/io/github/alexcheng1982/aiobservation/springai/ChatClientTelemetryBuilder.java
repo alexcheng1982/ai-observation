@@ -11,6 +11,9 @@ import java.util.List;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 
+/**
+ * Builder for {@linkplain ChatClientTelemetry}
+ */
 public class ChatClientTelemetryBuilder {
 
   private final OpenTelemetry openTelemetry;
@@ -20,6 +23,12 @@ public class ChatClientTelemetryBuilder {
     this.openTelemetry = openTelemetry;
   }
 
+  /**
+   * Should trace prompt content
+   *
+   * @param shouldTrace
+   * @return
+   */
   public ChatClientTelemetryBuilder tracePromptContent(boolean shouldTrace) {
     if (shouldTrace) {
       additionalExtractors.add(PromptContentAttributesExtractor.INSTANCE);
@@ -29,6 +38,12 @@ public class ChatClientTelemetryBuilder {
     return this;
   }
 
+  /**
+   * Should trace chat response content
+   *
+   * @param shouldTrace
+   * @return
+   */
   public ChatClientTelemetryBuilder traceChatResponseContent(
       boolean shouldTrace) {
     if (shouldTrace) {
