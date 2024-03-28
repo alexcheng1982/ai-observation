@@ -4,6 +4,8 @@
 
 ### OpenTelemetry
 
+See the example app in [examples/spring-ai-example](examples/spring-ai-example).
+
 #### Metrics
 
 | Name                                  | Type      | Description                           |
