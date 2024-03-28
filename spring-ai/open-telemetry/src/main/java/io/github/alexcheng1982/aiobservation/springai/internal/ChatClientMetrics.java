@@ -40,7 +40,7 @@ public class ChatClientMetrics implements OperationListener {
         meter
             .histogramBuilder("chat.client.call.duration")
             .setUnit("s")
-            .setDescription("Duration of ChatClient call requests.")
+            .setDescription("Duration of ChatClient call requests")
             .setExplicitBucketBoundariesAdvice(DURATION_SECONDS_BUCKETS);
     duration = stableDurationBuilder.build();
     promptTokenCounter = meter.counterBuilder("chat.client.prompt.tokens.count")

@@ -4,6 +4,15 @@
 
 ### OpenTelemetry
 
+#### Metrics
+
+| Name                                  | Type      | Description                           |
+|---------------------------------------|-----------|---------------------------------------|
+| `chat.client.call.duration`           | Histogram | Duration of ChatClient call requests  |
+| `chat.client.prompt.tokens.count`     | Counter   | Count of ChatClient prompt tokens     |
+| `chat.client.generation.tokens.count` | Counter   | Count of ChatClient generation tokens |
+| `chat.client.total.tokens.count`      | Counter   | Count of ChatClient total tokens      |
+
 For `ChatClient`s, using `ChatClientTelemetry` to wrap an existing `ChatClient`.
 
 ```java
