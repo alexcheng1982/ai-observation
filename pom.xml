@@ -8,7 +8,7 @@
   <artifactId>parent</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>AI Observation</name>
+  <name>Java AI App Observation</name>
   <description>Java AI App Observability</description>
   <modules>
     <module>spring-ai/open-telemetry</module>
