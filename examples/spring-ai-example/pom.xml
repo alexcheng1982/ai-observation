@@ -37,8 +37,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.alexcheng1982.ai-observation</groupId>
-      <artifactId>spring-ai-opentelemetry</artifactId>
+      <groupId>io.github.alexcheng1982</groupId>
+      <artifactId>ai-observation-spring-ai-opentelemetry</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
